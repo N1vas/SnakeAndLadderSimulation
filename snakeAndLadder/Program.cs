@@ -8,33 +8,41 @@ namespace snakeAndLadder
             const int NO_PLAY = 1;
             const int LADDER = 2;
             const int SNAKE = 3;
+            const int WIN_POSITION = 100;
             Console.WriteLine("Welcome to Snake and Ladder Simulation(Single Player)");
-            int playerOnePosition = 0;
+            int player = 0;
+            int[] playerPosition = { 0, 0};
             Random random = new Random();
-            int dieRoll, dieRollCount = 0;
-            while (playerOnePosition < 100)
+            int dieRoll;
+            int[] dieRollCount = { 0, 0};
+            while (playerPosition[player] < 100)
             {
                 dieRoll = random.Next(1, 7);
-                dieRollCount++;
+                dieRollCount[player]++;
                 int check = random.Next(1, 4);
                 switch (check)
                 {
                     case NO_PLAY:
-                        playerOnePosition += 0;
+                        playerPosition[player] += 0;
                         break;
                     case LADDER:
-                        if((playerOnePosition + dieRoll)<= 100)
-                            playerOnePosition += dieRoll;
+                        if ((playerPosition[player] + dieRoll) <= 100)
+                            playerPosition[player] += dieRoll;
                         break;
                     case SNAKE:
-                        playerOnePosition -= dieRoll;
-                        if (playerOnePosition < 0)
-                            playerOnePosition = 0;
+                        playerPosition[player] -= dieRoll;
+                        if (playerPosition[player] < 0)
+                            playerPosition[player] = 0;
                         break;
                 }
-                Console.WriteLine("Position of Player 1 is at " + playerOnePosition);
+                Console.WriteLine("Position of Player "+(player+1)+" is at " + playerPosition[player]);
+                if ((check == 1 || check == 3) && playerPosition[player] != WIN_POSITION)
+                    if (player == 0)
+                        player = 1;
+                    else
+                        player = 0;
             }
-            Console.WriteLine("Dice rolled "+dieRollCount+" no of times to reach position 100");
+            Console.WriteLine("Player "+(player + 1)+" Won the game and rolled the dice " +dieRollCount[player]+" no of times to reach position 100");
         }
     }
 }
